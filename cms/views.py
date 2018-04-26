@@ -26,8 +26,8 @@ VOLVER = """
     Volver a la pagina principal</a>
 """
 
-class myContentHandler(ContentHandler):
 
+class myContentHandler(ContentHandler):
     def __init__(self):
         self.inItem = False
         self.inContent = False
