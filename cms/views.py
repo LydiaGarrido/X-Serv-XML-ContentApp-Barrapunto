@@ -102,7 +102,6 @@ def pag(request, resource):
             respuesta = "La pagina ya está creada. "
             respuesta += VOLVER
         except Pages.DoesNotExist:
-            page = request.body
             nueva_pag = Pages(name=resource, page=request.body)
             nueva_pag.save()
             respuesta = "Se ha guardado la pagina "
