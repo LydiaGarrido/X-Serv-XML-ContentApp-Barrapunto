@@ -86,6 +86,7 @@ def pag(request, resource):
             respuesta += rss_contenido
         except Pages.DoesNotExist:
             respuesta = "La página no existe<br>"
+            respuesta += "Rellene el siguiente formulario si desea crearla:<br>"
             respuesta += FORMULARIO
     elif request.method == "POST":
         name = request.POST['nombre']

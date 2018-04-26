@@ -85,31 +85,40 @@ def pag(request, resource):
             respuesta += "<br>Contenido de Barrapunto:<br>"
             respuesta += rss_contenido
         except Pages.DoesNotExist:
-            respuesta = "La página no existe<br>"
+            respuesta = "La página no existe<p>"
+            respuesta += "Rellene el siguiente formulario "
+            respuesta += "si desea crearla:<p>"
             respuesta += FORMULARIO
     elif request.method == "POST":
         name = request.POST['nombre']
         page = request.POST['page']
         nueva_pag = Pages(name=name, page=page)
         nueva_pag.save()
-        respuesta = "Pagina guardada" + VOLVER
+        respuesta = "Pagina guardada "
+        respuesta += VOLVER
     elif request.method == "PUT":
-        pagina = Pages(name=resource, page=request.body)
-        pagina.save()
-        respuesta = "Se ha guardado la pagina " + pag.name + ". " + VOLVER
+        try:
+            pagina = Pages.objects.get(name=resource)
+            respuesta = "La pagina ya está creada. "
+            respuesta += VOLVER
+        except Pages.DoesNotExist:
+            page = request.body
+            nueva_pag = Pages(name=resource, page=request.body)
+            nueva_pag.save()
+            respuesta = "Se ha guardado la pagina "
+            respuesta += nueva_pag.name + ". " + VOLVER
     else:
         respuesta = "Metodo no permitido"
-
     return HttpResponse(respuesta)
 
 
 def error(request):
-    respuesta = "Ha ocurrido un error: la pagina no esta disponible. "
+    respuesta = "Ha ocurrido un error: "
+    respuesta += "la pagina no esta disponible. "
     return HttpResponse(respuesta + VOLVER)
 
 
 def update(request):
-
     theParser = make_parser()
     theHandler = myContentHandler()
     theParser.setContentHandler(theHandler)
